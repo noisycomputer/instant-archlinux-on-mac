@@ -413,8 +413,8 @@ docker run \
   -v ~/systeminfo.txt:/systeminfo \
   -v ~/airootfs.sfs:/root/airootfs.sfs \
   -u root \
-  --rm \
-  -ti \
+#  --rm \
+  -td \
   yantis/instant-archlinux-on-mac \
   bash -c "run-remote-script https://raw.githubusercontent.com/noisycomputer/instant-archlinux-on-mac/master/mac-install-internal.sh"
 

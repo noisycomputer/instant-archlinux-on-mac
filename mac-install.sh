@@ -407,14 +407,24 @@ set +e
 # Run the container but make the script user definable as who knows what changes
 # a user might want to make to the install script.
 ###############################################################################
+#SUCCESSFUL_INSTALL=0
+#docker run \
+#  --privileged \
+#  -v ~/systeminfo.txt:/systeminfo \
+#  -v ~/airootfs.sfs:/root/airootfs.sfs \
+#  -u root \
+#  --rm \
+#  -td \
+#  yantis/instant-archlinux-on-mac \
+#  bash -c "run-remote-script https://raw.githubusercontent.com/noisycomputer/instant-archlinux-on-mac/master/mac-install-internal.sh"
+
 SUCCESSFUL_INSTALL=0
 docker run \
   --privileged \
   -v ~/systeminfo.txt:/systeminfo \
   -v ~/airootfs.sfs:/root/airootfs.sfs \
   -u root \
-#  --rm \
-  -td \
+  -d \
   yantis/instant-archlinux-on-mac \
   bash -c "run-remote-script https://raw.githubusercontent.com/noisycomputer/instant-archlinux-on-mac/master/mac-install-internal.sh"
 

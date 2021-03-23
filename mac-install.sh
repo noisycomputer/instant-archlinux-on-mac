@@ -424,17 +424,17 @@ SUCCESSFUL_INSTALL=$?
 ###############################################################################
 # Shut down the boo2docker virtual machine
 ###############################################################################
-timeout=$(($(date +%s) + 60))
+#timeout=$(($(date +%s) + 60))
 # until docker-image stop 2>/dev/null || [[ $(date +%s) -gt $timeout ]]; do
-until docker-machine stop docker-vm 2>/dev/null || [[ $(date +%s) -gt $timeout ]]; do
-  :
-done
+#until docker-machine stop docker-vm 2>/dev/null || [[ $(date +%s) -gt $timeout ]]; do
+#  :
+#done
 
 ###############################################################################
 # Remove our physical harddrive from the boot2docker virtualmachine
 ###############################################################################
-echo "Remove our physical harddrive from the boot2docker virtualmachine"
-vboxmanage storageattach docker-vm --storagectl "SATA" --port 2 --device 0 --type hdd --medium none
+#echo "Remove our physical harddrive from the boot2docker virtualmachine"
+#vboxmanage storageattach docker-vm --storagectl "SATA" --port 2 --device 0 --type hdd --medium none
 
 ###############################################################################
 # Remove our docker image
@@ -444,21 +444,21 @@ vboxmanage storageattach docker-vm --storagectl "SATA" --port 2 --device 0 --typ
 ###############################################################################
 # Restore security 
 ###############################################################################
-sudo chmod 660 /dev/${ROOTDISK}s1
-sudo sed -i.bak "s/Defaults timestamp_timeout=-1/#Defaults timestamp_timeout=-1/" /etc/sudoers
+#sudo chmod 660 /dev/${ROOTDISK}s1
+#sudo sed -i.bak "s/Defaults timestamp_timeout=-1/#Defaults timestamp_timeout=-1/" /etc/sudoers
 
 ###############################################################################
 # All Done 
 ###############################################################################
-echo "*******************************************************"
-if [ $SUCCESSFUL_INSTALL -ne 0 ]; then
-  echo "ERROR: The install was not successful please try again."
-  echo "*******************************************************"
-else
-  echo "DONE - REBOOT NOW TO USE ARCH LINUX."
-  echo "*******************************************************"
-  read -p "Press [Enter] key to REBOOT or CTRL C to keep using Mac OSX"
-  sudo reboot
-fi
+#echo "*******************************************************"
+#if [ $SUCCESSFUL_INSTALL -ne 0 ]; then
+#  echo "ERROR: The install was not successful please try again."
+#  echo "*******************************************************"
+#else
+#  echo "DONE - REBOOT NOW TO USE ARCH LINUX."
+#  echo "*******************************************************"
+#  read -p "Press [Enter] key to REBOOT or CTRL C to keep using Mac OSX"
+#  sudo reboot
+#fi
 
 # vim:set ts=2 sw=2 et:

@@ -175,7 +175,7 @@ cp /var/cache/pacman/custom/* /arch/var/cache/pacman/custom/
 ###############################################################################
 echo "** Syncing pacman database & Update **"
 ###############################################################################
-chroot /arch pacman -Syyu --noconfirm
+chroot /arch pacman -Syyu --noconfirm --needed
 
 ###############################################################################
 # Have pacman use aria2 for downloads and give it extreme patience
@@ -197,7 +197,7 @@ echo "Installing cached general packages"
 ###############################################################################
 
 echo "** Updating System **"
-chroot /arch pacman -Syyu --noconfirm
+chroot /arch pacman -Syyu --noconfirm -needed
 
 
 ###############################################################################
@@ -410,7 +410,7 @@ fi
 # Install the fan daemon
 # TODO: The new macbook April 2015 is fanless so this might not work on that. Need to check.
 ###############################################################################
-chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/mbpfan*.pkg.tar.xz
+#chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/mbpfan*.pkg.tar.xz
 
 ###############################################################################
 # Powersaving 
@@ -422,15 +422,15 @@ echo "options usbcore autosuspend=1" >> /arch/etc/modprobe.d/usbcore.conf
 ###############################################################################
 # Broadcom network drivers
 ###############################################################################
-if grep -i -A1 "Broadcom" /systeminfo | grep -qi "MAC" ; then
-  echo "Machine has an Broadcom network card."
+#if grep -i -A1 "Broadcom" /systeminfo | grep -qi "MAC" ; then
+#  echo "Machine has an Broadcom network card."
 
-  chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/broadcom-wl-dkms*.pkg.tar.xz
+#  chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/broadcom-wl-dkms*.pkg.tar.xz
 
   # Install the Broadcom b43 firmware just in case the user needs it.
   # https://wiki.archlinux.org/index.php/Broadcom_wireless
-  cp -R /firmware/* /arch/lib/firmware/
-fi
+#  cp -R /firmware/* /arch/lib/firmware/
+#fi
 
 ###############################################################################
 # Fix IRQ issues.
@@ -477,14 +477,14 @@ echo applesmc >> /arch/etc/modules
 ###############################################################################
 # Enable Thermald 
 ###############################################################################
-chroot /arch runuser -l user -c "yaourt --noconfirm --needed -S thermald"
-chroot /arch systemctl enable thermald
+#chroot /arch runuser -l user -c "yaourt --noconfirm --needed -S thermald"
+#chroot /arch systemctl enable thermald
 
 ###############################################################################
 # Enable cpupower and set governer to powersave
 ###############################################################################
-chroot /arch runuser -l user -c "yaourt --noconfirm --needed -S cpupower"
-chroot /arch systemctl enable cpupower
+#chroot /arch runuser -l user -c "yaourt --noconfirm --needed -S cpupower"
+#chroot /arch systemctl enable cpupower
 
 # works in a Linux docker container but not a mac boot2docker one
 # Will run at initial startup.
@@ -765,7 +765,7 @@ mv /arch/var/cache/pacman/custom/* /arch/var/cache/pacman/pkg/
 # TODO: See /usr/lib/yaourt/*.sh
 ###############################################################################
 echo "Updating Databases"
-chroot /arch runuser -l user -c "yaourt -Syy"
+#chroot /arch runuser -l user -c "yaourt -Syy"
 
 ###############################################################################
 # Restore pacman's security

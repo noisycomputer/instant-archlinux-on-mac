@@ -68,7 +68,7 @@ chroot /arch mount -t devpts none /dev/pts
 ###############################################################################
 echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 echo "nameserver 8.8.8.4" >> /etc/resolv.conf
-cp /etc/resolv.conf /arch/etc/resolv.conf
+cp --remove-destination /etc/resolv.conf /arch/etc/resolv.conf
 
 # chroot /arch export HOME=/dev/root
 # chroot /arch export LC_ALL=C

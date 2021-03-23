@@ -197,7 +197,7 @@ echo "Installing cached general packages"
 ###############################################################################
 
 echo "** Updating System **"
-chroot /arch pacman -Syyu --noconfirm -needed
+chroot /arch pacman -Syyu --noconfirm --needed
 
 
 ###############################################################################

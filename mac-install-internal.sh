@@ -566,6 +566,7 @@ EOL
 ###############################################################################
 # Enable network manager
 ###############################################################################
+chroot /arch pacman -S networkmanager --noconfirm --needed
 chroot /arch systemctl disable dhcpcd
 chroot /arch systemctl enable NetworkManager.service
 

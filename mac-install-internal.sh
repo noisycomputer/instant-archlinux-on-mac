@@ -839,20 +839,20 @@ sync
 #
 # Not sure why mkinitcpio -p linux has to be done again
 ###############################################################################
-echo " "
-echo "If for some reason you get an error device not found"
-echo "hit F2 then select a fallback"
-echo "then run mkinitcpio -p linux"
-echo " "
+#echo " "
+#echo "If for some reason you get an error device not found"
+#echo "hit F2 then select a fallback"
+#echo "then run mkinitcpio -p linux"
+#echo " "
 
 ###############################################################################
 # Unmount physical drive
 ###############################################################################
 # delay before unmount to finish writing.otherwise sometimes in use.
-sleep 2
+#sleep 2
 
 # Unmount main disk
-umount /mnt/archlinux
+#umount /mnt/archlinux
 
 ###############################################################################
 # TODO LIST
@@ -866,6 +866,6 @@ umount /mnt/archlinux
 # Looks like a ton of goodies in helmuthdu's script. https://github.com/helmuthdu/aui
 # Reverse Engineer iMac Retina's 5K. I notice that with rEFInd installed it defaults to 4k.
 # - Possible this can solve that: https://github.com/0xbb/apple_set_os.efi
-echo "*** FINISHED ***"
+#echo "*** FINISHED ***"
 
 # vim:set ts=2 sw=2 et:

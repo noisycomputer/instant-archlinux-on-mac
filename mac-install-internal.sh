@@ -828,7 +828,7 @@ mount /dev/sdb /mnt/archlinux
 ###############################################################################
 echo "Syncing system to your drive. This will take a couple minutes. (or significantly longer if using USB)"
 
-bash time rsync -aAXHv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} /arch/* /mnt/archlinux
+time rsync -aAXHv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} /arch/* /mnt/archlinux
 
 # Not sure if this is needed but to be safe.
 sync

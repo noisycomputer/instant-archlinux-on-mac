@@ -199,18 +199,6 @@ if ! hash zsh 2> /dev/null; then
   echo "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh" >> install_zsh.sh
 fi
 
-###############################################################################
-# Install Paragon ExtFS
-###############################################################################
-if ! hash fsck_ufsd_ExtFS 2> /dev/null; then
-  curl -O http://dl.paragon-software.com/demo/extmac10_trial.dmg
-  hdiutil attach extmac10_trial.dmg
-  # sudo installer -pkg /Volumes/ParagonFS.localized/FSInstaller.app/Contents/Resources/Paragon\ ExtFS\ for\ Mac\ OS\ X.pkg -target /
-  sudo installer -pkg /Volumes/ParagonFS.localized/FSInstaller.app/Contents/Resources/Paragon\ ExtFS\ for\ Mac.pkg -target /
-  sleep 2
-  hdiutil detach -force /Volumes/ParagonFS.localized
-  rm extmac10_trial.dmg
-fi
 
 ###############################################################################
 echo "Resize Disk"
@@ -246,7 +234,7 @@ else
   if diskutil list ${ROOTDISK} | grep -q "Linux Filesystem"  ; then
     echo "Skipping disk resize and ext4 volume creation since already done."
     echo "Formating Disk."
-    diskutil eraseVolume UFSD_EXTFS4 "1" ${ROOTDISK}s4
+    diskutil eraseVolume UFSD_EXTFS4 "1" ${ROOTDISK}s3
     echo "Disk formated"
   else
     sudo diskutil resizeVolume ${ROOTDISK}s2 ${1}g 1 UFSD_EXTFS4 "1" 0g
@@ -325,7 +313,7 @@ then
   echo "Downloading rootfs image"
   cd ~
   # curl -OL http://mirror.rackspace.com/archlinux/iso/2016.10.01/arch/x86_64/airootfs.sfs
-  curl -OL http://mirror.rackspace.com/archlinux/iso/2017.05.01/arch/x86_64/airootfs.sfs
+  curl -OL http://mirrors.ocf.berkeley.edu/archlinux/iso/2021.03.01/arch/x86_64/airootfs.sfs
 fi
 
 ###############################################################################
@@ -428,7 +416,7 @@ docker run \
   --rm \
   -ti \
   yantis/instant-archlinux-on-mac \
-  bash -c "run-remote-script https://raw.githubusercontent.com/yantis/instant-archlinux-on-mac/master/mac-install-internal.sh"
+  bash -c "run-remote-script https://github.com/noisycomputer/instant-archlinux-on-mac/blob/master/mac-install-internal.sh"
 
 # Flag that we did or did not have a successful install
 SUCCESSFUL_INSTALL=$?

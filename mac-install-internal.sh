@@ -315,96 +315,96 @@ fi
 ###############################################################################
 # Setup AMD/ATI Radeon
 ###############################################################################
-if grep -i -A1 "AMD" /systeminfo | grep -qi "GPU" ; then
-  echo "Machine has an AMD/ATI graphics card."
-
-  # Install drivers (opensource version)
-  # chroot /arch pacman --noconfirm --needed -S xf86-video-ati
-  # sed -i "s/MODULES=\"/MODULES=\"radeon /" /arch/etc/mkinitcpio.conf
-  #   mkdir -p /arch/usr/share/X11/xorg.conf.d
-  #   cat >/arch/usr/share/X11/xorg.conf.d/20-radeon.conf<<EOL
-  #   Section "Device"
-  #   Identifier "Radeon"
-  #   Driver "radeon"
-  #   EndSection
-  # EOL
+#if grep -i -A1 "AMD" /systeminfo | grep -qi "GPU" ; then
+#  echo "Machine has an AMD/ATI graphics card."
+#
+#  # Install drivers (opensource version)
+#  # chroot /arch pacman --noconfirm --needed -S xf86-video-ati
+#  # sed -i "s/MODULES=\"/MODULES=\"radeon /" /arch/etc/mkinitcpio.conf
+#  #   mkdir -p /arch/usr/share/X11/xorg.conf.d
+#  #   cat >/arch/usr/share/X11/xorg.conf.d/20-radeon.conf<<EOL
+#  #   Section "Device"
+#  #   Identifier "Radeon"
+#  #   Driver "radeon"
+#  #   EndSection
+#  # EOL
 
   # Can not get open source drivers to work on the Mac Retina so using Catalyst
-  sed -i "s/MODULES=\"/MODULES=\"fglrx /" /arch/etc/mkinitcpio.conf
+#  sed -i "s/MODULES=\"/MODULES=\"fglrx /" /arch/etc/mkinitcpio.conf
 
   # Blacklist the open source radeon module
-  echo "install radeon /bin/false" >> /arch/etc/modprobe.d/blacklist.conf
+#  echo "install radeon /bin/false" >> /arch/etc/modprobe.d/blacklist.conf
 
-  echo "[catalyst]" >> /arch/etc/pacman.conf
-  echo "Server = http://catalyst.wirephire.com/repo/catalyst/\$arch" >> /arch/etc/pacman.conf
+#  echo "[catalyst]" >> /arch/etc/pacman.conf
+#  echo "Server = http://catalyst.wirephire.com/repo/catalyst/\$arch" >> /arch/etc/pacman.conf
 
   # Add the catalyst repo key for later when we re-enable security
-  chroot /arch pacman-key -r 653C3094 --keyserver hkp://subkeys.pgp.net
-  chroot /arch pacman-key --lsign 653C3094
+#  chroot /arch pacman-key -r 653C3094 --keyserver hkp://subkeys.pgp.net
+#  chroot /arch pacman-key --lsign 653C3094
 
   # For whatever reason when the system comes back up it won't remember these keys.
   # So lets cache them and import them on first run.
-  chroot /arch mkdir -p /var/cache/keys
-  chroot /arch bash -c "pacman-key -e 653C3094 > /var/cache/keys/653C3094.pub"
+#  chroot /arch mkdir -p /var/cache/keys
+#  chroot /arch bash -c "pacman-key -e 653C3094 > /var/cache/keys/653C3094.pub"
 
   # I can't get the keys to work in the chroot in the docker container. TEMP disable.
-  echo "SigLevel = Never" >> /arch/etc/pacman.conf
+#  echo "SigLevel = Never" >> /arch/etc/pacman.conf
 
   # Sync the new catalyst database
-  chroot /arch pacman -Sy
+#  chroot /arch pacman -Sy
 
   # Install Catalyst drivers.
-  chroot /arch pacman --noconfirm -Rdd mesa-libgl
-  chroot /arch pacman --noconfirm --needed -S catalyst-hook
-  chroot /arch pacman --noconfirm --needed -S catalyst-libgl
+#  chroot /arch pacman --noconfirm -Rdd mesa-libgl
+#  chroot /arch pacman --noconfirm --needed -S catalyst-hook
+#  chroot /arch pacman --noconfirm --needed -S catalyst-libgl
 
   # Update mkinitcpio with our catalyst hook
-  OLDLINE=`grep "^HOOKS" /arch/etc/mkinitcpio.conf`
-  NEWLINE=`echo ${OLDLINE} | sed -e "s/fsck/fsck fglrx/"`
-  sed -i "s/${OLDLINE}/${NEWLINE}/" /arch/etc/mkinitcpio.conf
+#  OLDLINE=`grep "^HOOKS" /arch/etc/mkinitcpio.conf`
+#  NEWLINE=`echo ${OLDLINE} | sed -e "s/fsck/fsck fglrx/"`
+#  sed -i "s/${OLDLINE}/${NEWLINE}/" /arch/etc/mkinitcpio.conf
 
-  chroot /arch systemctl enable catalyst-hook
+#  chroot /arch systemctl enable catalyst-hook
 
-  echo "AMD/ATI Installed"
-fi
+#  echo "AMD/ATI Installed"
+#fi
 
 ###############################################################################
 # Setup NVIDIA
 ###############################################################################
-if grep -i -A1 "NVIDIA" /systeminfo | grep -qi "GPU" ; then
-  echo "Machine has an NVIDIA graphics card."
+#if grep -i -A1 "NVIDIA" /systeminfo | grep -qi "GPU" ; then
+#  echo "Machine has an NVIDIA graphics card."
 
   # Install Nvidia drivers with automatic re-compilation of the NVIDIA module with kernel update 
   # Doesn't nothing
   # HOOKS="base udev block autodetect modconf filesystems keyboard fsck"
 
   # Uninstall mesa-libgl since it will conflict with nividia-libgl
-  chroot /arch pacman --noconfirm -Rdd mesa-libgl
+#  chroot /arch pacman --noconfirm -Rdd mesa-libgl
 
   # Install Nvidia DKMS and Utils 
-  chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/nvidia-*-3*.pkg.tar.xz
+#  chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/nvidia-*-3*.pkg.tar.xz
 
   # Install Nvidia hook 
-  chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/nvidia-hook*.pkg.tar.xz
+#  chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/custom/nvidia-hook*.pkg.tar.xz
 
   # Install Nvidia backlight stuff
   # dmesg says "No supported Nvidia graphics adapter found"
   # chroot /arch bash -c "pacman --noconfirm --needed -U /var/cache/pacman/custom/nvidia-bl-dkms*.pkg.tar.xz"
 
   # update mkinitcpio with our nvidia hook
-  OLDLINE=`grep "^HOOKS" /arch/etc/mkinitcpio.conf`
-  NEWLINE=`echo ${OLDLINE} | sed -e "s/fsck/fsck nvidia/"`
-  sed -i "s/${OLDLINE}/${NEWLINE}/" /arch/etc/mkinitcpio.conf
+#  OLDLINE=`grep "^HOOKS" /arch/etc/mkinitcpio.conf`
+#  NEWLINE=`echo ${OLDLINE} | sed -e "s/fsck/fsck nvidia/"`
+#  sed -i "s/${OLDLINE}/${NEWLINE}/" /arch/etc/mkinitcpio.conf
 
-  mkdir -p /arch/usr/share/X11/xorg.conf.d
-  cat >/arch/usr/share/X11/xorg.conf.d/20-nvidia.conf<<EOL
-  Section "Device"
-  Identifier "Default Nvidia Device"
-  Driver "nvidia"
-  EndSection
-EOL
-  echo "Nvidia video drivers installed"
-fi
+#  mkdir -p /arch/usr/share/X11/xorg.conf.d
+#  cat >/arch/usr/share/X11/xorg.conf.d/20-nvidia.conf<<EOL
+#  Section "Device"
+#  Identifier "Default Nvidia Device"
+#  Driver "nvidia"
+#  EndSection
+#EOL
+#  echo "Nvidia video drivers installed"
+#fi
 
 ###############################################################################
 # Install the fan daemon

@@ -153,6 +153,23 @@ sed -i "s/#Color/Color/" /arch/etc/pacman.conf
 ###############################################################################
 echo "Server = https://mirrors.ocf.berkeley.edu/archlinux/\$repo/os/\$arch" > /arch/etc/pacman.d/mirrorlist
 
+###############################################################################
+# Copy over general & custom cached packages
+# Moved the packages to the docker container as I know the docker container 
+# downloads trusted packages and it should be being build by a third party
+# (docker hub) plus it avoids hammering the mirrors while working on this. 
+# Plus it makes the install extremely fast.
+###############################################################################
+#mkdir -p /arch/var/cache/pacman/general/
+
+# Remove any development packages.
+# rm /var/cache/pacman/general/*devel*
+# # rm /var/cache/pacman/general/*-dev-*
+
+#cp /var/cache/pacman/general/* /arch/var/cache/pacman/general/
+
+#mkdir -p /arch/var/cache/pacman/custom/
+#cp /var/cache/pacman/custom/* /arch/var/cache/pacman/custom/
 
 
 ###############################################################################
@@ -172,7 +189,7 @@ echo "Installing cached general packages"
 ###############################################################################
 # chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/general/package-quer*.pkg.tar.xz
 # chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/general/package-quer*.pkg.tar.xz
-chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/general/*.pkg.tar.xz
+# chroot /arch pacman --noconfirm --needed -U /var/cache/pacman/general/*.pkg.tar.xz
 
 ###############################################################################
 # update after pushing packages from docker container to get the system 

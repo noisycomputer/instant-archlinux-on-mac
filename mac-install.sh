@@ -355,10 +355,10 @@ docker pull yantis/instant-archlinux-on-mac
 #  unzip -o refind-bin-0.10.4.zip
 #  if [ $INSTALL_TYPE  == "usb" ]; then
     # (cd refind-bin-0.8.7 && sudo sh install.sh --alldrivers --usedefault /dev/${ROOTDISK}s1 )
-    echo "Installing rEFInd to USB"
-    mkdir -p  /Volumes/ESP/EFI
-    cp -R refind-bin-0.10.4/refind /Volumes/ESP/EFI
-    cp refind-bin-0.10.4/refind/refind.conf-sample /Volumes/ESP/EFI/refind/refind.conf
+#    echo "Installing rEFInd to USB"
+#    mkdir -p  /Volumes/ESP/EFI
+#    cp -R refind-bin-0.10.4/refind /Volumes/ESP/EFI
+#    cp refind-bin-0.10.4/refind/refind.conf-sample /Volumes/ESP/EFI/refind/refind.conf
 
 #  else
 #    sh refind-bin-0.10.4/refind-install --alldrivers --yes
@@ -394,8 +394,8 @@ docker pull yantis/instant-archlinux-on-mac
 #    cd ~
 #  fi
 
-  sudo diskutil unmount /Volumes/ESP
-fi
+#  sudo diskutil unmount /Volumes/ESP
+#fi
 
 ###############################################################################
 # Even if we failed clean up what we can 

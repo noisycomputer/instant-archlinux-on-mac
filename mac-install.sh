@@ -326,11 +326,11 @@ docker pull yantis/instant-archlinux-on-mac
 # Install rEFInd
 ###############################################################################
 # Check if rEFInd already installed
-if [ ! -d  /Volumes/ESP ]; then
-  echo "Mounting EFI volume"
-  sudo mkdir -p /Volumes/ESP
-  sudo mount -t msdos /dev/${ROOTDISK}s1 /Volumes/ESP
-fi
+#if [ ! -d  /Volumes/ESP ]; then
+#  echo "Mounting EFI volume"
+#  sudo mkdir -p /Volumes/ESP
+#  sudo mount -t msdos /dev/${ROOTDISK}s1 /Volumes/ESP
+#fi
 
 # # Remove rEFInd
 # if [ -d  /Volumes/ESP/EFI/refind ]; then
@@ -340,59 +340,59 @@ fi
 #   sudo rm -rf /Volumes/ESP/EFI/refind
 # fi
 
-if [ -d  /Volumes/ESP/EFI/refind ]; then
-  echo "rEFInd already installed so not reinstalling."
+#if [ -d  /Volumes/ESP/EFI/refind ]; then
+#  echo "rEFInd already installed so not reinstalling."
 
-  unmount /Volumes/ESP
-else
+#  unmount /Volumes/ESP
+#else
 
-  if [ $INSTALL_TYPE  != "usb" ]; then
-    unmount /Volumes/ESP
-  fi
+#  if [ $INSTALL_TYPE  != "usb" ]; then
+#    unmount /Volumes/ESP
+#  fi
 
   # Install rEFInd
-  curl -OL http://downloads.sourceforge.net/project/refind/0.10.4/refind-bin-0.10.4.zip
-  unzip -o refind-bin-0.10.4.zip
-  if [ $INSTALL_TYPE  == "usb" ]; then
+#  curl -OL http://downloads.sourceforge.net/project/refind/0.10.4/refind-bin-0.10.4.zip
+#  unzip -o refind-bin-0.10.4.zip
+#  if [ $INSTALL_TYPE  == "usb" ]; then
     # (cd refind-bin-0.8.7 && sudo sh install.sh --alldrivers --usedefault /dev/${ROOTDISK}s1 )
     echo "Installing rEFInd to USB"
     mkdir -p  /Volumes/ESP/EFI
     cp -R refind-bin-0.10.4/refind /Volumes/ESP/EFI
     cp refind-bin-0.10.4/refind/refind.conf-sample /Volumes/ESP/EFI/refind/refind.conf
 
-  else
-    sh refind-bin-0.10.4/refind-install --alldrivers --yes
-  fi
+#  else
+#    sh refind-bin-0.10.4/refind-install --alldrivers --yes
+#  fi
 
-  rm -r refind-bin-0.10.4
-  rm refind-bin-0.10.4.zip
+#  rm -r refind-bin-0.10.4
+#  rm refind-bin-0.10.4.zip
 
   # Sometimes rEFInd fails to unmount /Volumes/ESP so lets use that if its already open
-  if [ ! -d  /Volumes/ESP ];
-  then
-    sudo mkdir -p /Volumes/ESP
-    sudo mount -t msdos /dev/${ROOTDISK}s1 /Volumes/ESP
-  fi
+#  if [ ! -d  /Volumes/ESP ];
+#  then
+#    sudo mkdir -p /Volumes/ESP
+ #   sudo mount -t msdos /dev/${ROOTDISK}s1 /Volumes/ESP
+ # fi
 
   # Install the reFInd minimal theme if the user doesn't already have it installed
   # I moved this out of the docker container so it isn't as clean (ie: re-remounting etc)
-  echo "Checking if rEFInd minimal theme is installed"
+#  echo "Checking if rEFInd minimal theme is installed"
 
-  if [ ! -d  /Volumes/ESP/EFI/refind/rEFInd-minimal ];
-  then
+#  if [ ! -d  /Volumes/ESP/EFI/refind/rEFInd-minimal ];
+#  then
 
-    cd /Volumes/ESP/EFI/refind
+#    cd /Volumes/ESP/EFI/refind
     # You can pick different forks of this to your taste.
-    git clone https://github.com/dylansm/rEFInd-minimal
+#    git clone https://github.com/dylansm/rEFInd-minimal
 
     # Default is 128x128  Lets make it is 256x256 (still tiny on retina displays)
-    sed -i.bak "s/#big_icon_size 256/big_icon_size 256/" refind.conf
-    rm refind.conf.bak
-    echo "include rEFInd-minimal/theme.conf" >> refind.conf
+#    sed -i.bak "s/#big_icon_size 256/big_icon_size 256/" refind.conf
+#    rm refind.conf.bak
+#    echo "include rEFInd-minimal/theme.conf" >> refind.conf
 
     # Leave or we can't unmount
-    cd ~
-  fi
+#    cd ~
+#  fi
 
   sudo diskutil unmount /Volumes/ESP
 fi

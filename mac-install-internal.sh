@@ -507,24 +507,29 @@ echo "done ucode"
 # Setup rEFInd to boot up using Intel Micokernel updates
 ###############################################################################
 # Hit F2 for these options
-ls /dev
+#ls /dev
 #UUID=$(lsblk -no UUID /dev/sdb1) # Doesn't work in a docker container
-echo "start refind setup"
-UUID=$(blkid /dev/sdb -o export | grep UUID | head -1)
-echo $UUID
+#echo "start refind setup"
+#UUID=$(blkid /dev/sdb -o export | grep UUID | head -1)
+#echo $UUID
 #if [ $MODEL == "MacBook8,1" ]; then
-if [ $MODEL == "EXPERIMENTAL" ]; then
-  echo "placeholder"
+#if [ $MODEL == "EXPERIMENTAL" ]; then
+#  echo "placeholder"
  #  echo "\"1\" \"root=$UUID rootfstype=ext4 rw downclock=1 usbcore.autosuspend=1 h initrd=/boot/initramfs-linux.img\" " >> /arch/boot/refind_linux.conf
-else
+#else
   # Normal setup which works fine.
-  echo "\"Fallback with microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/intel-ucode.img initrd=/boot/initramfs-linux-fallback.img\" " >> /arch/boot/refind_linux.conf
-  echo "\"Fallback without microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/initramfs-linux-fallback\" " >> /arch/boot/refind_linux.conf
-  echo "\"Graphical Interface\" \"root=$UUID rootfstype=ext4 rw quiet loglevel=6 systemd.unit=graphical.target initrd=/boot/intel-ucode.img initrd=/boot/initramfs-linux.img\" " > /arch/boot/refind_linux.conf
-  echo "\"Normal with microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/intel-ucode.img initrd=/boot/initramfs-linux.img\" " >> /arch/boot/refind_linux.conf
-  echo "\"Normal without microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/initramfs-linux.img\" " >> /arch/boot/refind_linux.conf
-fi
-echo "end refind setup"
+#  echo "\"Fallback with microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/intel-ucode.img initrd=/boot/initramfs-linux-fallback.img\" " >> /arch/boot/refind_linux.conf
+#  echo "\"Fallback without microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/initramfs-linux-fallback\" " >> /arch/boot/refind_linux.conf
+#  echo "\"Graphical Interface\" \"root=$UUID rootfstype=ext4 rw quiet loglevel=6 systemd.unit=graphical.target initrd=/boot/intel-ucode.img initrd=/boot/initramfs-linux.img\" " > /arch/boot/refind_linux.conf
+#  echo "\"Normal with microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/intel-ucode.img initrd=/boot/initramfs-linux.img\" " >> /arch/boot/refind_linux.conf
+#  echo "\"Normal without microkernel updates\" \"root=$UUID rootfstype=ext4 rw loglevel=6 initrd=/boot/initramfs-linux.img\" " >> /arch/boot/refind_linux.conf
+#fi
+#echo "end refind setup"
+#-------------
+chroot /arch pacman -S grub --noconfirm
+chroot /arch grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck --debug
+chroot /arch grub-mkconfig -o /boot/grub/grub.cfg 
+
 ###############################################################################
 # Setup fstab
 # TODO look into not using discard. http://blog.neutrino.es/2013/howto-properly-activate-trim-for-your-ssd-on-linux-fstrim-lvm-and-dmcrypt/
@@ -849,10 +854,10 @@ sync
 # Unmount physical drive
 ###############################################################################
 # delay before unmount to finish writing.otherwise sometimes in use.
-#sleep 2
+sleep 2
 
 # Unmount main disk
-#umount /mnt/archlinux
+umount /mnt/archlinux
 
 ###############################################################################
 # TODO LIST
@@ -866,6 +871,6 @@ sync
 # Looks like a ton of goodies in helmuthdu's script. https://github.com/helmuthdu/aui
 # Reverse Engineer iMac Retina's 5K. I notice that with rEFInd installed it defaults to 4k.
 # - Possible this can solve that: https://github.com/0xbb/apple_set_os.efi
-#echo "*** FINISHED ***"
+echo "*** FINISHED ***"
 
 # vim:set ts=2 sw=2 et:
